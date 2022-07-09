@@ -1,33 +1,46 @@
-const express =require('express')
-const router=express.Router()
-const bookvalidation=require('../validator/bookvalidation')
-const {checkCreate, checkLogin}=require('../validator/uservalidation')
-const {createBook,getBookbyQuerry,bookDetail,updateBook,deleteBookbyPath}=require('../controllers/bookController')
-const {createUser, userLogin} =require('../controllers/userController')
-const {authentication, authorization}=require('../middlewares/auth')
-const {createReview} =require('../controllers/reviewController')
+const express = require('express')
+const router = express.Router()
+const bookvalidation = require('../validator/bookvalidation')
+const { checkCreate, checkLogin } = require('../validator/uservalidation')
+const { createBook, getBookbyQuerry, bookDetail, updateBook, deleteBookbyPath } = require('../controllers/bookController')
+const { createUser, userLogin } = require('../controllers/userController')
+const { authentication, authorization } = require('../middlewares/auth')
+const { createReview, updateReview, deleteReview } = require('../controllers/reviewController')
+const { reviewCheck } = require('../validator/reviewvalidation')
 
+//< ==================================== User API ======================================================>
 
-router.post('/register',checkCreate,createUser)
-router.post('/login',checkLogin,userLogin)
+router.post('/register', checkCreate, createUser)
 
-//============================================================================================//
+router.post('/login', checkLogin, userLogin)
 
-router.post('/books',authentication,authorization,bookvalidation,createBook)
-router.get('/books',authentication,getBookbyQuerry)
-router.get('/books/:bookId',authentication,bookDetail)
-router.put('/books/:bookId',authentication,authorization,updateBook)
-router.delete('/books/:bookId',authentication,authorization,deleteBookbyPath)
+//<===================================== Book API ======================================================>
 
-// =============================================================================================//
+router.post('/books', authentication, authorization, bookvalidation, createBook)
 
-router.post('/books/:bookId/review',createReview)
+router.get('/books', authentication, getBookbyQuerry)
 
-// router.all("/**", function (req, res) {
-//     res.status(404).send({
-//         status: false,
-//         msg: "The api you request is not available"
-//     })
-// })
+router.get('/books/:bookId', authentication, bookDetail)
+
+router.put('/books/:bookId', authentication, authorization, updateBook)
+
+router.delete('/books/:bookId', authentication, authorization, deleteBookbyPath)
+
+// <=================================== Review API ====================================================>
+
+router.post('/books/:bookId/review', reviewCheck, createReview)
+
+router.put('/books/:bookId/review/:reviewId', updateReview)
+
+router.delete('/books/:bookId/review/:reviewId', deleteReview)
+
+// <=================================== ERROR  ====================================================>
+
+router.all("/**", function (req, res) {
+    res.status(404).send({
+        status: false,
+        msg: "The api you request is not available"
+    })
+})
 
 module.exports = router;

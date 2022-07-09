@@ -41,8 +41,9 @@ const authorization = async function (req, res, next) {
 
         if (req.body.userId) {
             const userId = req.body.userId;
+            console.log(userId)
             if (!isValidObjectId(userId)) {
-                return res.status(400).send({ status: false, msg: "Book id is invalid" })
+                return res.status(400).send({ status: false, msg: `${userId} is not valid logged in author so you can not created Book`})
             }
             ownerOfBook = userId;
         }
@@ -50,22 +51,24 @@ const authorization = async function (req, res, next) {
             const bookId = req.params.bookId;
 
             if (!isValidObjectId(bookId)) {
-                return res.status(400).send({ status: false, msg: "Book id is invalid" })
+                return res.status(400).send({ status: false, msg: `${bookId} is not valid logged in author so you can not modify Book` })
             }
             const validBook = await bookModel.findById(bookId)
 
             if (!validBook)
-                return res.status(404).send({ status: false, msg: "book with thid bookid not found " })
+                return res.status(404).send({ status: false, msg: "book with this bookid not found " })
 
             // get the user id for requested book
             ownerOfBook = validBook.userId;
+            console.log(ownerOfBook);
         }
 
 
         //check if the logged-in user is requesting to modify their own resources 
         if (ownerOfBook != userId)
-            return res.status(403).send({ status: false, msg: 'Author logged in is not allowed to modify the requested blog data' })
+            return res.status(403).send({ status: false, msg: 'User logged in is not allowed to modify the requested book data' })
 
+            console.log("Successfully Authorised")
         next()
     }
     catch (err) {

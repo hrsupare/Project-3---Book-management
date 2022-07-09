@@ -20,7 +20,7 @@ const isValidData = function (value) {
     if (typeof value === "undefined" || value === null) return false;
     if (typeof value !== 'string') return false;
     if (typeof value === "string" && value.trim().length == 0) return false;
-    if (typeof value === "string") return true;
+    return true;
 }
 //checks if Object id has valid format
 const isValidObjectId = function (objectId) {

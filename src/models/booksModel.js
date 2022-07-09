@@ -7,12 +7,10 @@ const bookSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        trim: true
     },
     excerpt: {
         type: String,
         required: true,
-        trim: true
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -42,7 +40,7 @@ const bookSchema = new mongoose.Schema({
     },
     releasedAt: {
         type: Date,
-        default: moment().format("YYYY-MM-DD"),
+        // default: moment().format("YYYY-MM-DD"),
         required: true,
     },
     deletedAt: { type: Date },

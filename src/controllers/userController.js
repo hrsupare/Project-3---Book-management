@@ -5,7 +5,6 @@ const validate = require("../validator/validation")
 //<<------------------------------------------- CREATE USER ---------------------------------------------------->>
 const createUser = async function (req, res) {
     try {
-
         requestBody = req.body;
         requestBody.name = requestBody.name.trim().split(" ").filter(word => word).join(" ");
         //<----create a user document---->
@@ -20,7 +19,6 @@ const createUser = async function (req, res) {
 //<<-------------------------------------------  LOGIN ---------------------------------------------------->>
 const userLogin = async function (req, res) {
     try {
-
         const { email, password } = req.body
 
         //check if user is valid 

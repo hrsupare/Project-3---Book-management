@@ -7,7 +7,6 @@ const { createUser, userLogin } = require('../controllers/userController')
 const { authentication, authorization } = require('../middlewares/auth')
 const { createReview, updateReview, deleteReview } = require('../controllers/reviewController')
 const { reviewCheck } = require('../validator/reviewvalidation')
-
 //< ==================================== User API ======================================================>
 
 router.post('/register', checkCreate, createUser)

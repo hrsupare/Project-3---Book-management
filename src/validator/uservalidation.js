@@ -2,26 +2,18 @@ const mongoose = require("mongoose");
 const { isValidRequestBody, isValidObjectId, isValidData } = require("../validator/validation")
 // const validate = require("../validator/validation")
 
-
-
-
 const verifyPassword = function (password) {
-
     //minimum password length validation  
     if (password.length < 8) {
-
         msg = "Password length must be atleast 8 characters"
         return msg;
     }
-
     //maximum length of password validation  
     if (password.length > 15) {
 
         msg = "Password length must not exceed 15 characters"
         return msg;
     }
-
-
     return true;
 
 }
@@ -46,27 +38,15 @@ const checkCreate = function (req, res, next) {
         //check if each mandatory field is present in request body
         let missdata = "";
 
-        if (!isValidData(title)) {
-            missdata = missdata + "title"
+        if (!isValidData(title)) { missdata = missdata + "title" }
 
-        }
-        if (!isValidData(name)) {
-            missdata = missdata + " " + "name"
+        if (!isValidData(name)) { missdata = missdata + " " + "name" }
 
-        }
-        if (!isValidData(phone)) {
-            missdata = missdata + " " + "phone"
+        if (!isValidData(phone)) { missdata = missdata + " " + "phone" }
 
-        }
-        if (!isValidData(email)) {
-            missdata = missdata + " " + "email"
+        if (!isValidData(email)) { missdata = missdata + " " + "email" }
 
-        }
-        if (!isValidData(password)) {
-            missdata = missdata + " " + "password"
-
-        }
-
+        if (!isValidData(password)) { missdata = missdata + " " + "password" }
         if (missdata) {
             let message = missdata + " is missing  or not String type"
             return res.status(400).send({ status: false, msg: message })
@@ -105,47 +85,44 @@ const checkCreate = function (req, res, next) {
 
 }
 
+
 const checkLogin = function (req, res, next) {
     try {
 
         const requestBody = req.body
-            
+
 
         if (!isValidRequestBody(requestBody)) {
             return res.status(400).send({ status: false, message: "Request body is empty!! Please provide the email and password" })
         }
 
-
-       
-
-
-    const { email, password } = requestBody
+        const { email, password } = requestBody
 
 
-    if (!isValidData(email)) {
-        return res.status(400).send({ status: false, msg: "Please provide email" })
+        if (!isValidData(email)) {
+            return res.status(400).send({ status: false, msg: "Please provide email" })
 
-    }
-
-
-    if (!isValidData(password)) {
-        return res.status(400).send({ status: false, msg: "Please provide password" })
-
-    }
-
-    if (!verifyEmail(email)) {
-        return res.status(400).send({ status: false, msg: "Email format is invalid" })
-
-    }
+        }
 
 
-    const result = verifyPassword(password)
-    if (result != true) {
-        return res.status(400).send({ status: false, message: result })
-    }
+        if (!isValidData(password)) {
+            return res.status(400).send({ status: false, msg: "Please provide password" })
 
-    //if all validations are correct then go to controller
-    next()
+        }
+
+        if (!verifyEmail(email)) {
+            return res.status(400).send({ status: false, msg: "Email format is invalid" })
+
+        }
+
+
+        const result = verifyPassword(password)
+        if (result != true) {
+            return res.status(400).send({ status: false, message: result })
+        }
+
+        //if all validations are correct then go to controller
+        next()
 
     }
     catch (err) {
@@ -153,5 +130,7 @@ const checkLogin = function (req, res, next) {
     }
 
 }
+
+
 
 module.exports = { checkCreate, checkLogin }

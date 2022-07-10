@@ -41,7 +41,7 @@ const bookvalidation = async function (req, res, next) {
 
         let user_id = await userModel.findById({ _id: userId });
         if (!user_id) {
-            return res.status(400).send({ status: false, msg: "No such User  exsit" });
+            return res.status(400).send({ status: false, msg: "No such User  exist" });
         }
 
         //validating ISBN is entere and valid

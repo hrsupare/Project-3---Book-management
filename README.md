@@ -81,14 +81,14 @@
 - Return the HTTP status 200 if any documents are found. The response structure should be like [this](#successful-response-structure) 
 - If no documents are found then return an HTTP status 404 with a response like [this](#error-response-structure) 
 - Filter books list by applying filters. Query param can have any combination of below filters.
-  - By userId
+  - By userId 
   - By category
-  - By subcategory
+  - By subcategory 
   example of a query url: books?filtername=filtervalue&f2=fv2
 - Return all books sorted by book name in Alphabatical order
 
 ### GET /books/:bookId
-- Returns a book with complete details including reviews. Reviews array would be in the form of Array. Response example [here](#book-details-response)
+- Returns a book with complete details including reviews. Reviews array would be in the form of Array. Response example [here](#book-details-response)  
 - Return the HTTP status 200 if any documents are found. The response structure should be like [this](#successful-response-structure) 
 - If the book has no reviews then the response body should include book detail as shown [here](#book-details-response-no-reviews) and an empty array for reviewsData.
 - If no documents are found then return an HTTP status 404 with a response like [this](#error-response-structure) 
@@ -110,7 +110,7 @@
 
 ## Review APIs
 ### POST /books/:bookId/review
-- Add a review for the book in reviews collection.
+- Add a review for the book in reviews collection. 
 - Check if the bookId exists and is not deleted before adding the review. Send an error response with appropirate status code like [this](#error-response-structure) if the book does not exist
 - Get review details like review, rating, reviewer's name in request body.
 - Update the related book document by increasing its review count

@@ -40,7 +40,7 @@ const bookSchema = new mongoose.Schema({
     },
     releasedAt: {
         type: Date,
-        // default: moment().format("YYYY-MM-DD"),
+    
         required: true,
     },
     deletedAt: { type: Date },

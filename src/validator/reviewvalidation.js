@@ -1,5 +1,4 @@
-const validate = require("./validation")
-
+const { isValidRequestBody, isValidObjectId, isValidData } = require("../validator/validation")
 
 
 const ratingCheck = function (value) {
@@ -25,34 +24,54 @@ const reviewCheck = function (req, res, next) {
 
    const { reviewedBy, rating, review, reviewedAt, isDeleted } = requestBody
 
+   //============================bookId validation==========================================//
+   if (!isValidObjectId(bookId)) {
+
+      return res.status(400).send({ status: false, message: "not a valid bookId" })
+   }
    // =========check wheather mandatory  fields are present or not=======================//
 
    let missdata = ""
 
-   if (!bookId) { missdata = missdata + "bookId" }
+   let bookID = bookId.trim()
 
-   if (!rating) { missdata = missdata + " " + "rating" }
+   if (bookID.length == 0) {
 
-   if (!reviewedAt) { missdata = missdata + " " + "reviewedAt" }
-   
-   if (missdata) {let message = missdata + " " + "is missing"
+      missdata = missdata + "bookId"
+   }
+
+   if (!rating) {
+
+      missdata = missdata + " " + "rating"
+   }
+
+
+   if (missdata) {
+
+      let message = missdata + " " + "is missing"
+
       return res.status(400).send({ status: false, message: message })
    }
    // =================rating validation===============================//
-   if (typeof rating != "number" || !ratingCheck(rating))
+   if (typeof rating != "number")
 
       return res.status(400).send({ status: false, message: "rating is not in a proper format" })
 
+   if (! /^[1-5]{1}$/.test(rating))
+
+      return res.status(400).send({ status: false, message: "rating should be between 1 & 5" })
    //==================reviewat validation===========================//
 
 
-   let dateCheck = new Date(reviewedAt).getTime()
+   if (reviewedAt) {
 
-   if (isNaN(dateCheck)) {
 
-      return res.status(400).send({ status: false, message: "reviewAt is not in a proper format " })
+      if (!/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/.test(reviewedAt))
+
+         return res.status(400).send({ status: false, message: "date format should be in YYYY-MM-DD" })
 
    }
+
    // ===========================review validation=============================================//
    if (review) {
 
@@ -70,11 +89,7 @@ const reviewCheck = function (req, res, next) {
          return res.status(400).send({ status: false, message: "give proper name as reviewedBy" })
 
    }
-   //============================bookId validation==========================================//
-   if (!isValidObjectId(bookId)) {
 
-      return res.status(400).send({ status: false, message: "not a valid bookId" })
-   }
 
    if (isDeleted) {
 

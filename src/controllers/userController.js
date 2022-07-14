@@ -1,12 +1,14 @@
 const userModel = require('../models/userModel')
 const jwt = require("jsonwebtoken")
-const validate = require("../validator/validation")
 
 //<<------------------------------------------- CREATE USER ---------------------------------------------------->>
 const createUser = async function (req, res) {
     try {
         requestBody = req.body;
-        requestBody.name = requestBody.name.trim().split(" ").filter(word => word).join(" ");
+        const { name, password, address } = requestBody
+        requestBody.name = name.trim().split(" ").filter(word => word).join(" ");
+        requestBody.password = password.trim()
+        requestBody.address.street = address.street.trim().split(" ").filter(word => word).join(" ");
         //<----create a user document---->
         const savedData = await userModel.create(requestBody)
         return res.status(201).send({ status: true, message: 'Success', data: savedData })
@@ -28,9 +30,9 @@ const userLogin = async function (req, res) {
         }
 
         //<<-------generating token --------->>
-        const token = jwt.sign({ userId: getData._id }, "##k&&k@@s")
-        res.status(200).send({ status: true, data: token })
-
+      
+         const token = jwt.sign({ userId: getData._id }, "group-25",{expiresIn:'3d'})
+         res.status(200).send({ status: true, data: token })
     }
     catch (err) {
         res.status(500).send({ status: false, error: err.message })

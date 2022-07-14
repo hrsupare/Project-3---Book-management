@@ -15,15 +15,15 @@ router.post('/login', checkLogin, userLogin)
 
 //<===================================== Book API ======================================================>
 
-router.post('/books', authentication, authorization, bookvalidation, createBook)
+router.post('/books', authentication, bookvalidation, createBook)
 
 router.get('/books', authentication, getBookbyQuerry)
 
 router.get('/books/:bookId', authentication, bookDetail)
 
-router.put('/books/:bookId', authentication, authorization, updateBook)
+router.put('/books/:bookId', authentication, updateBook)
 
-router.delete('/books/:bookId', authentication, authorization, deleteBookbyPath)
+router.delete('/books/:bookId', authentication, deleteBookbyPath)
 
 // <=================================== Review API ====================================================>
 
@@ -42,4 +42,4 @@ router.all("/**", function (req, res) {
     })
 })
 
-module.exports = router;
+module.exports = router; 
